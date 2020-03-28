@@ -1,8 +1,9 @@
 import React from 'react';
+import Articles from './Components/Articles';
 
 const App = () => {
     return (
-	    <div>Hello world</div>
+        <Articles />
     )
 }
 
