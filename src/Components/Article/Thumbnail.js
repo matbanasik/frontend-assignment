@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Thumbnail = ({ src }) => <img src={src} alt='' />;
+const Thumbnail = ({ src }) => (
+    <figure className="image is-square">
+        <img src={src} alt="" />
+    </figure>
+)
 
 Thumbnail.propTypes = {
     src: PropTypes.string,

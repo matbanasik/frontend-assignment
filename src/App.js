@@ -1,9 +1,12 @@
 import React from 'react';
 import Articles from './Components/Articles';
+import './index.scss';
 
 const App = () => {
     return (
-        <Articles />
+        <div className="container">
+            <Articles />
+        </div>
     )
 }
 

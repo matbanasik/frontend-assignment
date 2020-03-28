@@ -22,7 +22,15 @@ module.exports = {
                     presets: ["@babel/preset-env", "@babel/preset-react"],
                     plugins: ["@babel/transform-runtime"]
                 },
-            }
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader',
+                ],
+            },
         ]
     },
     plugins: [new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html') })]

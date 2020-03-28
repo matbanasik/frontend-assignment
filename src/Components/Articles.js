@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Article from './Article/Article';
+import ArticlesSection from './ArticlesSection';
 
 const useEndpoint = (endpoint) => {
     const [endpointState, setEndpointState] = useState({
@@ -33,12 +34,12 @@ const Articles = () => {
     const [data, error, isLoading]  = useEndpoint('http://localhost:6010/articles/sports');
 
     return (
-        <div>
+        <ArticlesSection>
             {data.map((article) => {
                 return <Article key={article.id} article={article} />
             })}
             {isLoading && <div>Loading...</div>}
-        </div>
+        </ArticlesSection>
     )
 }
 

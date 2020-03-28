@@ -8,12 +8,26 @@ import ArticleDate from './ArticleDate';
 const Article = ({ article }) => {
     const { title, preamble, image, date } = article;
     return (
-        <div>
-            <Thumbnail src={image} />
-            <Title>{title}</Title>
-            <Preamble>{preamble}</Preamble>
-            <ArticleDate>{date}</ArticleDate>
-        </div>
+        <article className="box column is-full">
+            <div className="columns">
+                <div className="column is-one-quarter">
+                    <Thumbnail src={image} />
+                </div>
+                <div className="column">
+                    <div className="columns is-multiline">
+                        <div className="column is-three-quarters">
+                            <Title>{title}</Title>
+                        </div>
+                        <div className="column is-one-quarter">             
+                            <ArticleDate>{date}</ArticleDate>
+                        </div>
+                        <div className="column is-full">
+                            <Preamble>{preamble}</Preamble>
+                        </div>
+                    </div>        
+                </div>
+            </div>
+        </article>
     )
 }
 
