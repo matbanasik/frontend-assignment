@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ArticlesSection = ({ children }) => (
-    <section className="section columns is-multiline bd-main-container container">
+    <section className="section column is-three-quarters bd-main-container container">
         {children}
     </section>
 )

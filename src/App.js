@@ -80,7 +80,15 @@ const App = () => {
     }
     
     return (
-        <div className="bd-main-container container media">
+        <div className="bd-main-container container media columns is-multiline">
+            <div className="section column is-full">
+                <div className="level-right">
+                    <button type="button" className="button is-medium level-item">
+                        Sort by date&nbsp;&nbsp;
+                        <i className="fa fa-sort" />
+                    </button>
+                </div>
+            </div>
             <FiltersSection>
                 <CheckboxFilter label="Sports" id="sport" checked={filters.sport} onChange={filterBySource} />
                 <CheckboxFilter label="Fashion" id="fashion" checked={filters.fashion} onChange={filterBySource} />
