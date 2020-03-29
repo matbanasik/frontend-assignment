@@ -10,6 +10,7 @@ import formatArticleDate from './utils/formatArticleDate';
 import getArticlesByFilters from './utils/getArticlesByFilters';
 import './index.scss';
 
+// This custom hooks should be more generic
 const useEndpoint = () => {
     const [endpointState, setEndpointState] = useState({
         data: [],
@@ -44,6 +45,7 @@ const useEndpoint = () => {
     return [endpointState.data, endpointState.error];
 }
 
+// Loading indicator should have been handled
 const App = () => {
     const [data, error]  = useEndpoint();
     const [articles, setArticles] = useState(data)
