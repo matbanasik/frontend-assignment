@@ -4,6 +4,7 @@ import Articles from './Components/Articles';
 import CheckboxFilter from './Components/SourceFilters/CheckboxFilter';
 import FiltersSection from './Components/SourceFilters/FiltersSection';
 import SortButton from './Components/SortButton/SortButton';
+import MainContentContainer from './Components/MainContentContainer';
 import ErrorMessage from './Components/ErrorMessage';
 import './index.scss';
 
@@ -37,7 +38,7 @@ const useEndpoint = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const sportArticles = fetch('http://localhost:6010/articles/sports');
+                const sportArticles = fetch('http://localhost:6010/srticles/sports');
                 const fashionArticles = fetch('http://localhost:6010/articles/fashion');
                 
                 const allArticlesPromises = await Promise.all([sportArticles, fashionArticles]);
@@ -114,7 +115,7 @@ const App = () => {
     }, [sortingOrder]);
     
     return (
-        <div className="bd-main-container container media columns is-multiline">
+        <MainContentContainer>
             {!error && (
                 <>
                     <SortButton onChange={sortByDate} />
@@ -126,7 +127,7 @@ const App = () => {
                 </>
             )}
             {error && <ErrorMessage message={error} />}
-        </div>
+        </MainContentContainer>
     )
 }
 
