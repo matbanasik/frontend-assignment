@@ -1,44 +1,65 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { orderBy } from 'lodash'; 
 import Articles from './Components/Articles';
 import CheckboxFilter from './Components/SourceFilters/CheckboxFilter';
 import FiltersSection from './Components/SourceFilters/FiltersSection';
+import SortButton from './Components/SortButton/SortButton';
+import ErrorMessage from './Components/ErrorMessage';
 import './index.scss';
+
+const months = new Map([
+    ['januar', 'Jan'],
+    ['februar', 'Feb'],
+    ['mars', 'Mar'],
+    ['april', 'Apr'],
+    ['mai', 'May'],
+    ['juni', 'Jun'],
+    ['juli', 'Jul'],
+    ['august', 'Aug'],
+    ['september', 'Sep'],
+    ['oktober', 'Oct'],
+    ['november', 'Nov'],
+    ['desember', 'Dec'],
+]);
+
+const formatArticleDate = (article) => {
+    const month = article.date.split(' ')[1];
+    const translatedDate = new Date(article.date.replace(month, months.get(month)));
+    return {...article, rawDate: translatedDate};
+};
 
 const useEndpoint = () => {
     const [endpointState, setEndpointState] = useState({
         data: [],
-        isLoading: false,
         error: null,
     });
 
     useEffect(() => {
         const fetchData = async () => {
-            const sportArticles = fetch('http://localhost:6010/articles/sports');
-            const fashionArticles = fetch('http://localhost:6010/articles/fashion');
+            try {
+                const sportArticles = fetch('http://localhost:6010/articles/sports');
+                const fashionArticles = fetch('http://localhost:6010/articles/fashion');
+                
+                const allArticlesPromises = await Promise.all([sportArticles, fashionArticles]);
+    
+                const allArticlesResponses = await Promise.all([allArticlesPromises[0].json(), allArticlesPromises[1].json()]);
+    
+                const allArticles = allArticlesResponses.reduce((acc, response) => {
+                    return [...acc, ...response.articles]
+                }, []).map(formatArticleDate)
+                
+                setEndpointState((prevState) => ({...prevState, data: allArticles}));
+            } catch (error) {
+                const message = 'Unable to fetch articles. Please try again later.'
+                setEndpointState((prevState) => ({...prevState, error: message}));
+            }
 
-            const allArticlesPromises = await Promise.all([sportArticles, fashionArticles]);
-
-            const allArticlesResponses = await Promise.all([allArticlesPromises[0].json(), allArticlesPromises[1].json()]);
-
-            const allArticles = allArticlesResponses.reduce((acc, response) => {
-                return [...acc, ...response.articles]
-            }, [])
-            
-            setEndpointState((prevState) => ({...prevState, data: allArticles}));
         }
 
-        try {
-            setEndpointState((prevState) => ({...prevState, isLoading: true}));
-            fetchData();
-        } catch (e) {
-            setEndpointState((prevState) => ({...prevState, error: e}));
-        }
-
-        setEndpointState((prevState) => ({...prevState, isLoading: false}));
-
+        fetchData();
     }, [])
 
-    return [endpointState.data, endpointState.error, endpointState.isLoading];
+    return [endpointState.data, endpointState.error];
 }
 
 const getArticlesByFilters = (articles, filters) => {
@@ -54,8 +75,9 @@ const getArticlesByFilters = (articles, filters) => {
 
 
 const App = () => {
-    const [data, error, isLoading]  = useEndpoint();
+    const [data, error]  = useEndpoint();
     const [articles, setArticles] = useState(data)
+    const [sortingOrder, setSortingOrder] = useState('desc');
     const [filters, setFilters] = useState({
         fashion: true,
         sport: true,
@@ -78,22 +100,32 @@ const App = () => {
         const { id, checked } = event.target;
         setFilters((prevState) => ({ ...prevState, [id]: checked }))
     }
+
+    const sortByDate = () => {
+        setSortingOrder((prevState) => {
+            return prevState === 'desc' ? 'asc' : 'desc';
+        })
+    }
+
+    useEffect(() => {
+        setArticles((prevState) => {
+            return orderBy(prevState, 'rawDate', sortingOrder);;
+        })
+    }, [sortingOrder]);
     
     return (
         <div className="bd-main-container container media columns is-multiline">
-            <div className="section column is-full">
-                <div className="level-right">
-                    <button type="button" className="button is-medium level-item">
-                        Sort by date&nbsp;&nbsp;
-                        <i className="fa fa-sort" />
-                    </button>
-                </div>
-            </div>
-            <FiltersSection>
-                <CheckboxFilter label="Sports" id="sport" checked={filters.sport} onChange={filterBySource} />
-                <CheckboxFilter label="Fashion" id="fashion" checked={filters.fashion} onChange={filterBySource} />
-            </FiltersSection>
-            <Articles data={articles} />
+            {!error && (
+                <>
+                    <SortButton onChange={sortByDate} />
+                    <FiltersSection>
+                        <CheckboxFilter label="Sports" id="sport" checked={filters.sport} onChange={filterBySource} />
+                        <CheckboxFilter label="Fashion" id="fashion" checked={filters.fashion} onChange={filterBySource} />
+                    </FiltersSection>
+                    <Articles data={articles} />
+                </>
+            )}
+            {error && <ErrorMessage message={error} />}
         </div>
     )
 }
