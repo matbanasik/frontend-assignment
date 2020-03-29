@@ -6,28 +6,8 @@ import FiltersSection from './Components/SourceFilters/FiltersSection';
 import SortButton from './Components/SortButton/SortButton';
 import MainContentContainer from './Components/MainContentContainer';
 import ErrorMessage from './Components/ErrorMessage';
+import formatArticleDate from './utils/formatArticleDate';
 import './index.scss';
-
-const months = new Map([
-    ['januar', 'Jan'],
-    ['februar', 'Feb'],
-    ['mars', 'Mar'],
-    ['april', 'Apr'],
-    ['mai', 'May'],
-    ['juni', 'Jun'],
-    ['juli', 'Jul'],
-    ['august', 'Aug'],
-    ['september', 'Sep'],
-    ['oktober', 'Oct'],
-    ['november', 'Nov'],
-    ['desember', 'Dec'],
-]);
-
-const formatArticleDate = (article) => {
-    const month = article.date.split(' ')[1];
-    const translatedDate = new Date(article.date.replace(month, months.get(month)));
-    return {...article, rawDate: translatedDate};
-};
 
 const useEndpoint = () => {
     const [endpointState, setEndpointState] = useState({
