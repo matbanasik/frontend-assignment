@@ -7,6 +7,7 @@ import SortButton from './Components/SortButton/SortButton';
 import MainContentContainer from './Components/MainContentContainer';
 import ErrorMessage from './Components/ErrorMessage';
 import formatArticleDate from './utils/formatArticleDate';
+import getArticlesByFilters from './utils/getArticlesByFilters';
 import './index.scss';
 
 const useEndpoint = () => {
@@ -42,18 +43,6 @@ const useEndpoint = () => {
 
     return [endpointState.data, endpointState.error];
 }
-
-const getArticlesByFilters = (articles, filters) => {
-    const activeFilters = Object.keys(filters).filter((key) => {
-        return filters[key];
-    });
-    const filteredArticles = articles.filter((article) => {
-        return activeFilters.includes(article.category);
-    })
-
-    return filteredArticles;
-};
-
 
 const App = () => {
     const [data, error]  = useEndpoint();
