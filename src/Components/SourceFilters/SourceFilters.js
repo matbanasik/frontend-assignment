@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CheckboxFilter from './CheckboxFilter';
 import FiltersSection from './FiltersSection';
 
-const SourceFilters = () => {
+const SourceFilters = ({ handleFiltersChange }) => {
     return (
         <FiltersSection>
             <CheckboxFilter label="Sports" id="sports" checked={false} />
