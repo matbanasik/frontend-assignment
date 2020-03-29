@@ -38,7 +38,7 @@ const useEndpoint = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const sportArticles = fetch('http://localhost:6010/srticles/sports');
+                const sportArticles = fetch('http://localhost:6010/articles/sports');
                 const fashionArticles = fetch('http://localhost:6010/articles/fashion');
                 
                 const allArticlesPromises = await Promise.all([sportArticles, fashionArticles]);
