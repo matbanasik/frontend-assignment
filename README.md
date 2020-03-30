@@ -6,4 +6,4 @@ To run project:
 > `$ npm run dev`
 Server will start listening on port `3000`.
 
-I have provided some comments into the parts of code that could be refactored. I did't have enough time recenlty to do this ;) 
+I have provided some comments into the parts of code that could be refactored. App also requires some styling improvements.
